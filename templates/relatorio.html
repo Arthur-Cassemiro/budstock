@@ -1,0 +1,135 @@
+<style>
+
+    /* estilo para todos o botões */
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 18px;
+      margin: 15px auto;
+      border: none;
+      cursor: pointer;
+      width: auto;
+    }
+    /* estilo para o botão de fechar */
+    .close{
+    position: absolute;
+    top: 0;
+    right: 14px;
+    font-size: 42px;
+    cursor: pointer;
+    }
+    
+    /* estilo para o botão de confirmação*/
+    .bt{
+    
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 18px;
+      margin: 15px auto;
+      border: none;
+      cursor: pointer;
+      width: auto;
+    
+    }
+    
+    
+    
+    /* estilo extra para o botão de cancelamento */
+    .cancelbtn {
+      width: auto;
+      padding: 10px 18px;
+      background-color: #f44336;
+    }
+    
+    
+    .container {
+      padding: 16px;
+    }
+    
+    /* background */
+    .modal {
+      width:100%;
+        height:100%;
+        background-color:rgba(0, 0, 0,0.7);
+        opacity:0.7;
+        top:0;
+        position: absolute;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        display:none;
+    }
+    
+    /* conteudo da caixa */
+    .modal-content {
+      width: 500px;
+        height:300px;
+        background-color: white;
+        border-radius: 4px;
+        text-align: center;
+        position: relative;
+    }
+    
+    
+    
+      
+      </style>
+
+<h1>Relatório : {{estoque}}</h1>
+<h2>Receita : {{receita}}</h2>
+<h3>Hora_Ini : {{hora_ini}}     Hora_Fim : {{hora_fim}}</h3>
+<h4>Produtos vendidos:</h4>
+<div class="col-md-8">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              {{ message }}
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+</div>
+<div class="modal" id="myForm">
+    <form action="" class="modal-content" method="POST">
+      <div class="close" onclick="closeForm()">&times;</div>
+      <h2>Deseja realmente excluir o relatório?</h2>
+  
+      <input type="submit" onclick="closeForm()"name="delete" value="sim" class="bt"/>
+      <button type="button" name="no" class="cancelbtn" onclick="closeForm()">Não</button>
+    </form>
+  </div>
+<script>
+function openForm() {
+    document.getElementById("myForm").style.display = "flex";
+  }
+  
+  function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+  }
+</script>
+<table>
+    <tr>
+        <th width="100">Numero:</th>
+        <th width="400">Nome:</th>
+        <th width="150">Preço:</th>
+        <th width="100">Quantidade:</th>
+    </tr>
+    {% for li in li_li %}
+  <tr>
+        {% for valor in li %}
+    <td>{{valor}}</td>
+        {% endfor %}
+  </tr>
+     {% endfor %}
+</table>
+
+<form action="/relatorio"  method="POST">
+<input id="voltar" type="submit" name="voltar" value="Voltar">
+<input id="baixar" type="submit" name="baixar" value="Baixar PDF">
+<button id="deletar" type="submit" name="deletar" value="Apagar Relatorio" onclick="openForm()">Apagar Relatorio</button>
+<input type="hidden" name="nome_estoque" value="{{estoque}}">
+<input type="hidden" name="estoque_num" value="{{estoque_num}}">
+<input type="hidden" name="hora_ini" value="{{hora_ini}}">
+
+</form>
